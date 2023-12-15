@@ -1,8 +1,5 @@
 /* 
 
-Milestone 2
-Ciascuna icona ha una proprietà "color": utilizzare questa proprietà per visualizzare le icone del colore corrispondente.
-
 Milestone 3
 Aggiungere alla pagina una select in cui le options corrispondono ai vari tipi di icone (animal, vegetable, user). Quando l'utente seleziona un tipo dalla select, visualizzare solamente le icone corrispondenti.
 
@@ -145,45 +142,41 @@ Come possiamo usare i dati presenti nella nostra struttura dati per creare l'ele
 Inizialmente può essere sufficiente stampare dei semplici div, senza alcuno stile, con all'interno l'icona e uno span con il nome. Solamente quando la parte logica è completa, ci dedichiamo al css.
  */
 
-//  <i class="fa-solid fa-cat"></i>
-//  <i class="fa-solid fa-user-secret"></i>
-
-
-
-
 const rowEl = document.querySelector('.row');
 
 for (let i = 0; i < list.length; i++) {
     const iconName = list[i].name;
     const iconPrefix = list[i].prefix;
+    //Milestone 2 colora le icone con valore color:
+    const iconColor = list[i].color;
+    /* ******************************* */
     //const iconEl = generateIcolnEl(iconName, iconPrefix)
-    const iClass = `${iconPrefix}solid ${iconPrefix}${iconName}`;
-    //iconEl.className = iClass;
+    /* ******************************* */
+    const iClass = `${iconPrefix}solid ${iconPrefix}${iconName} ${iconColor}`;
 
     const colMarkUp = generateColMarkUp(iClass, iconName);
     rowEl.insertAdjacentHTML("beforeend", colMarkUp);
 }
-//wanted to generate HTMLElement <i></i> but can't fit it into the Template
-/* function generateIcolnEl(name, prefix) {
+/* ************************************** 
+At first trying to fit a - const iconEl = HTMLElement <i>...</i> - into TemplateLiteral ${iconEl} but not possible.
+
+function generateIcolnEl(name, prefix) {
     const iconEl = document.createElement('i');
     const iClass = `${prefix}solid ${prefix}${name}`;
     iconEl.className = iClass;   
     return iconEl
-} */
-
+} 
+****************************************/
 
 function generateColMarkUp(fontAwesomeIconClass, fontAwesomeIconName) {        
     const colMarkUp = `
     <div class="col px-4">
         <div class="card text-center shadow py-3">
             <i class="${fontAwesomeIconClass}"></i> 
-            <div class="text-uppercase ">${fontAwesomeIconName}</div>
+            <span class="text-uppercase">${fontAwesomeIconName}</span>
         </div>             
     </div>
     `
     return colMarkUp
 }
 
-
-
-//.row.justify-content-between.flex-wrap>.col-2

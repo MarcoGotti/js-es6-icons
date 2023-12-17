@@ -137,34 +137,63 @@ Le icone presenti nella struttura dati fanno riferimento alla nota libreria Font
 Come possiamo usare i dati presenti nella nostra struttura dati per creare l'elemento html nel modo corretto e visualizzare l'icona in pagina?
 
 Inizialmente può essere sufficiente stampare dei semplici div, senza alcuno stile, con all'interno l'icona e uno span con il nome. Solamente quando la parte logica è completa, ci dedichiamo al css.
- */
+*/
 
 const rowEl = document.querySelector('.row');
 const iconType = document.getElementById('selectIconType').value
 
-const typeSelect = list.filter((element) =>{
-    if (element.type === iconType) {
+//create list according to selected property .type
+
+const typeSelectList = list.filter((element) =>{
+
+	if (element.type === iconType) {
         return true;        
     } else if (iconType === 'all') {
         return true;
     }   
+
 });
-console.log(typeSelect);
 
-for (let i = 0; i < typeSelect.length; i++) {
-    const iconName = typeSelect[i].name;
-    const iconPrefix = typeSelect[i].prefix;
+
+//create random color
+
+const hexUnits = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 'a', 'b', 'c', 'd', 'e', 'f' ]
+let hexUnitsNumb = '';
+
+for (let i = 0; i < 6; i++) {	
+
+	const element = hexUnits[Math.floor(Math.random()*hexUnits.length)];
+	hexUnitsNumb += element;	
+}
+
+const randomColor = '#' + hexUnitsNumb;
+
+
+// create Array with randomColor
+// After: not necessary with TemplateLiteral. Objects of typeSelectList keep original color value.
+
+/* const randomColorList = typeSelectList.map((icon) => {
+	icon.color = randomColor;
+	return icon
+});
+*/
+
+
+for (let i = 0; i < typeSelectList.length; i++) {
+    const iconName = typeSelectList[i].name;
+    const iconPrefix = typeSelectList[i].prefix;
     //Milestone 2 colora le icone con valore color:
-    const iconColor = typeSelect[i].color;
-    /* ******************************* */
+    //const iconColor = typeSelectList[i].color;
+	//console.log(iconColor);
+/* ******************************************************* */
     //const iconEl = generateIcolnEl(iconName, iconPrefix)
-    /* ******************************* */
-    const iClass = `${iconPrefix}solid ${iconPrefix}${iconName} ${iconColor}`;
+/* ******************************************************* */
+    const iClass = `${iconPrefix}solid ${iconPrefix}${iconName}`;
 
-    const colMarkUp = generateColMarkUp(iClass, iconName);
+    const colMarkUp = generateColMarkUp(iClass, iconName, randomColor);
     rowEl.insertAdjacentHTML("beforeend", colMarkUp);
 }
-/* ************************************** 
+/* ******************************************************* 
 At first trying to fit a - const iconEl = HTMLElement <i>...</i> - into TemplateLiteral ${iconEl} but not possible.
 
 function generateIcolnEl(name, prefix) {
@@ -173,13 +202,13 @@ function generateIcolnEl(name, prefix) {
     iconEl.className = iClass;   
     return iconEl
 } 
-****************************************/
+*********************************************************** */
 
-function generateColMarkUp(fontAwesomeIconClass, fontAwesomeIconName) {        
+function generateColMarkUp(fontAwesomeIconClass, fontAwesomeIconName, generatedRandomColor) {        
     const colMarkUp = `
     <div class="col px-4">
         <div class="card text-center shadow py-3">
-            <i class="${fontAwesomeIconClass}"></i> 
+            <i class="${fontAwesomeIconClass}" style="color: ${generatedRandomColor};"></i> 
             <span class="text-uppercase">${fontAwesomeIconName}</span>
         </div>             
     </div>
@@ -187,6 +216,11 @@ function generateColMarkUp(fontAwesomeIconClass, fontAwesomeIconName) {
     return colMarkUp
 }
 
+
+
 //Milestone 3 Aggiungere alla pagina una select in cui le options corrispondono ai vari tipi di icone (animal, vegetable, user). Quando l'utente seleziona un tipo dalla select, visualizzare solamente le icone corrispondenti.
 
 //manipola direttamente Array removing objects non utili con un array.filter. Sistema ciclo e function in modo da richiamarli con il nuovo Array 
+
+// BONUS 1 - modificare la struttura dati fornita e valorizzare la proprietà "color" in modo dinamico: generare in modo casuale un codice colore, sapendo che la notazione esadecimale è formata dal simbolo "#" seguito da 6 caratteri alfanumerici compresi tra 0 e 9 e A e F. 
+//2 - popolare le options della select della milestone 3 dinamicamente.

@@ -1,11 +1,9 @@
-.orange{
-    color: orange;
+.logoStyle{
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    color: rgb(135, 5, 5);
+    font-weight: 900;
 }
 
-.green {
-    color: #cb7c30;
-}
-
-.blue {
-    color: blue;
+.h_100{
+    height: calc(100vh - 125px);
 }

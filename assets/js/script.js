@@ -113,83 +113,87 @@ const list = [
 		color: 'blue'
 	}
 ];
-
-
-const rowEl = document.querySelector('.row');
-const iconType = document.getElementById('selectIconType').value
-
-
-//create list according to selected property .type
-
-const typeSelectList = list.filter((element) =>{
-
-	if (element.type === iconType) {
-        return true;        
-    } else if (iconType === 'all') {
-        return true;
-    }   
-
-});
-
-
-//create random color
-
-const hexUnits = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 'a', 'b', 'c', 'd', 'e', 'f' ]
-let hexUnitsNumb = '';
-
-for (let i = 0; i < 6; i++) {	
-
-	const element = hexUnits[Math.floor(Math.random()*hexUnits.length)];
-	hexUnitsNumb += element;	
+// this is only a copy-paste of cicle+function to generate the initial markup or when refreshing the page
+let rowEl = document.querySelector('.row');
+document.getElementById('selectIconType').value = 'Go random buddy!';
+for (let i = 0; i < list.length; i++) {
+	const iconName = list[i].name;
+	const iconPrefix = list[i].prefix;
+	const iconColor = list[i].color;
+	const iClass = `${iconPrefix}solid ${iconPrefix}${iconName}`;
+	const initialMarkUp = generateInitialMarkUp(iClass, iconName, iconColor);
+	rowEl.insertAdjacentHTML("beforeend", initialMarkUp);
+}
+function generateInitialMarkUp(fontAwesomeIconClass, fontAwesomeIconName, generatedRandomColor) {        
+    const initialMarkUp = `
+    	<div class="col px-4">
+        	<div class="card text-center shadow py-3">
+            	<i class="${fontAwesomeIconClass}" style="color: ${generatedRandomColor};"></i> 
+            	<span class="text-uppercase">${fontAwesomeIconName}</span>
+        	</div>             
+    	</div>
+    	`
+    return initialMarkUp
 }
 
-const randomColor = '#' + hexUnitsNumb;
 
 
-// create Array with randomColor
-// After: not necessary with TemplateLiteral. Objects of typeSelectList keep original color value.
-
-/* const randomColorList = typeSelectList.map((icon) => {
-	icon.color = randomColor;
-	return icon
-});
-*/
 
 
-for (let i = 0; i < typeSelectList.length; i++) {
-    const iconName = typeSelectList[i].name;
-    const iconPrefix = typeSelectList[i].prefix;
-    //Milestone 2 colora le icone con valore color:
-    //const iconColor = typeSelectList[i].color;
-	//console.log(iconColor);
-/* ********************************************************************************** */
-    //const iconEl = generateIcolnEl(iconName, iconPrefix)
-/* ********************************************************************************** */
-    const iClass = `${iconPrefix}solid ${iconPrefix}${iconName}`;
+/* ******************************************************* */
+// SELECT EVENT 
 
-    const colMarkUp = generateColMarkUp(iClass, iconName, randomColor);
-    rowEl.insertAdjacentHTML("beforeend", colMarkUp);
+function selectFunction() {
+	//empty the DOM-element .row	before appending new MarkUp
+	document.querySelector('.row').innerHTML = ''; 
+	
+	let rowEl = document.querySelector('.row');
+	const iconType = document.getElementById('selectIconType').value
+
+	//create array of objects according to selected property .type
+	const typeSelectList = list.filter((element) =>{
+
+		if (element.type === iconType) {
+        	return true;        
+    	} else if (iconType === 'all') {
+        	return true;
+    	}   
+	});
+
+	//create random color
+	const hexUnits = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 'a', 'b', 'c', 'd', 'e', 'f' ]
+	let hexUnitsNumb = '';
+
+	for (let i = 0; i < 6; i++) {	
+
+		const element = hexUnits[Math.floor(Math.random()*hexUnits.length)];
+		hexUnitsNumb += element;	
+	}
+	
+	const randomColor = '#' + hexUnitsNumb;
+	console.log('The color of these icons is ' + randomColor);
+
+	// generate markUp with selected objects and random color
+	for (let i = 0; i < typeSelectList.length; i++) {
+    	
+		const iconName = typeSelectList[i].name;
+    	const iconPrefix = typeSelectList[i].prefix;
+    	const iClass = `${iconPrefix}solid ${iconPrefix}${iconName}`;
+
+    	const colMarkUp = generateColMarkUp(iClass, iconName, randomColor);
+    	rowEl.insertAdjacentHTML("beforeend", colMarkUp);
+	}
+	
+
+	function generateColMarkUp(fontAwesomeIconClass, fontAwesomeIconName, generatedRandomColor) {        
+    	const colMarkUp = `
+    		<div class="col px-4">
+        		<div class="card text-center shadow py-3">
+            		<i class="${fontAwesomeIconClass}" style="color: ${generatedRandomColor};"></i> 
+            		<span class="text-uppercase">${fontAwesomeIconName}</span>
+        		</div>             
+    		</div>
+    		`
+    	return colMarkUp
+	}
 }
-/* ************************************************************************************** 
-At first trying to fit a // const iconEl = HTMLElement <i>...</i> // into TemplateLiteral ${iconEl} but not possible.
-
-function generateIcolnEl(name, prefix) {
-    const iconEl = document.createElement('i');
-    const iClass = `${prefix}solid ${prefix}${name}`;
-    iconEl.className = iClass;   
-    return iconEl
-} 
-**************************************************************************************** */
-
-function generateColMarkUp(fontAwesomeIconClass, fontAwesomeIconName, generatedRandomColor) {        
-    const colMarkUp = `
-    <div class="col px-4">
-        <div class="card text-center shadow py-3">
-            <i class="${fontAwesomeIconClass}" style="color: ${generatedRandomColor};"></i> 
-            <span class="text-uppercase">${fontAwesomeIconName}</span>
-        </div>             
-    </div>
-    `
-    return colMarkUp
-}
-

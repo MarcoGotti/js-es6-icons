@@ -119,48 +119,57 @@ document.getElementById('selectIconType').value = 'Go random buddy!';
 
 list.forEach(icon => {
 
-	const initialMarkUp = generateInitialMarkUp(`${icon.prefix}solid ${icon.prefix}${icon.name}`, icon.name, icon.color);
+	const initialMarkUp = generateColMarkUp(`${icon.prefix}solid ${icon.prefix}${icon.name}`, icon.name, icon.color);
 	rowEl.insertAdjacentHTML("beforeend", initialMarkUp);
 })
-
-function generateInitialMarkUp(fontAwesomeIconClass, fontAwesomeIconName, generatedRandomColor) {        
-    const initialMarkUp = `
-    	<div class="col px-4">
-        	<div class="card text-center shadow py-3">
-            	<i class="${fontAwesomeIconClass}" style="color: ${generatedRandomColor};"></i> 
-            	<span class="text-uppercase">${fontAwesomeIconName}</span>
-        	</div>             
-    	</div>
-    	`
-    return initialMarkUp
-}
-
-
-
 
 
 /* ******************************************************* */
 // SELECT EVENT 
+const selectEl = document.getElementById('selectIconType');
+
+selectEl.addEventListener('change', selectFunction);
 
 function selectFunction() {
 	//empty the DOM-element .row	before appending new MarkUp
 	let rowEl = document.querySelector('.row');
 	rowEl.innerHTML = ''; 
 	
+	//create array of objects according to selected property .type
 	const iconType = document.getElementById('selectIconType').value
 
-	//create array of objects according to selected property .type
 	const typeSelectList = list.filter((element) =>{
 
-		if (element.type === iconType) {
+		if (element.type === iconType || iconType === 'all') {
         	return true;        
-    	} else if (iconType === 'all') {
-        	return true;
-    	}   
+    	}
 	});
 
-	//create random color
-	const hexUnits = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 'a', 'b', 'c', 'd', 'e', 'f' ]
+	const randomColor = generateRdmColor()
+
+	// generate markUp with selected objects and random color
+	typeSelectList.forEach(icon => {
+
+    	const colMarkUp = generateColMarkUp(`${icon.prefix}solid ${icon.prefix}${icon.name}`, icon.name, randomColor);
+    	rowEl.insertAdjacentHTML("beforeend", colMarkUp);
+	})	
+}
+
+function generateColMarkUp(fontAwesomeIconClass, fontAwesomeIconName, generatedRandomColor) {        
+	const colMarkUp = `
+		<div class="col px-4">
+			<div class="card text-center shadow py-3">
+				<i class="${fontAwesomeIconClass}" style="color: ${generatedRandomColor};"></i> 
+				<span class="text-uppercase">${fontAwesomeIconName}</span>
+			</div>             
+		</div>
+		`
+	return colMarkUp
+}
+
+
+function generateRdmColor() {
+	const hexUnits = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f' ]
 	let randomColor = '#';
 
 	for (let i = 0; i < 6; i++) {	
@@ -168,26 +177,5 @@ function selectFunction() {
 		const element = hexUnits[Math.floor(Math.random()*hexUnits.length)];
 		randomColor += element;	
 	}
-	
-	console.log('The random color is ' + randomColor);
-
-	// generate markUp with selected objects and random color
-	typeSelectList.forEach(icon => {
-
-    	const colMarkUp = generateColMarkUp(`${icon.prefix}solid ${icon.prefix}${icon.name}`, icon.name, randomColor);
-    	rowEl.insertAdjacentHTML("beforeend", colMarkUp);
-	})
-	
-
-	function generateColMarkUp(fontAwesomeIconClass, fontAwesomeIconName, generatedRandomColor) {        
-    	const colMarkUp = `
-    		<div class="col px-4">
-        		<div class="card text-center shadow py-3">
-            		<i class="${fontAwesomeIconClass}" style="color: ${generatedRandomColor};"></i> 
-            		<span class="text-uppercase">${fontAwesomeIconName}</span>
-        		</div>             
-    		</div>
-    		`
-    	return colMarkUp
-	}
+	return randomColor
 }

@@ -116,14 +116,13 @@ const list = [
 // this is only a copy-paste of cicle+function to generate the initial markup or when refreshing the page
 let rowEl = document.querySelector('.row');
 document.getElementById('selectIconType').value = 'Go random buddy!';
-for (let i = 0; i < list.length; i++) {
-	const iconName = list[i].name;
-	const iconPrefix = list[i].prefix;
-	const iconColor = list[i].color;
-	const iClass = `${iconPrefix}solid ${iconPrefix}${iconName}`;
-	const initialMarkUp = generateInitialMarkUp(iClass, iconName, iconColor);
+
+list.forEach(icon => {
+
+	const initialMarkUp = generateInitialMarkUp(`${icon.prefix}solid ${icon.prefix}${icon.name}`, icon.name, icon.color);
 	rowEl.insertAdjacentHTML("beforeend", initialMarkUp);
-}
+})
+
 function generateInitialMarkUp(fontAwesomeIconClass, fontAwesomeIconName, generatedRandomColor) {        
     const initialMarkUp = `
     	<div class="col px-4">
@@ -145,9 +144,9 @@ function generateInitialMarkUp(fontAwesomeIconClass, fontAwesomeIconName, genera
 
 function selectFunction() {
 	//empty the DOM-element .row	before appending new MarkUp
-	document.querySelector('.row').innerHTML = ''; 
-	
 	let rowEl = document.querySelector('.row');
+	rowEl.innerHTML = ''; 
+	
 	const iconType = document.getElementById('selectIconType').value
 
 	//create array of objects according to selected property .type
@@ -162,27 +161,22 @@ function selectFunction() {
 
 	//create random color
 	const hexUnits = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 'a', 'b', 'c', 'd', 'e', 'f' ]
-	let hexUnitsNumb = '';
+	let randomColor = '#';
 
 	for (let i = 0; i < 6; i++) {	
 
 		const element = hexUnits[Math.floor(Math.random()*hexUnits.length)];
-		hexUnitsNumb += element;	
+		randomColor += element;	
 	}
 	
-	const randomColor = '#' + hexUnitsNumb;
-	console.log('The color of these icons is ' + randomColor);
+	console.log('The random color is ' + randomColor);
 
 	// generate markUp with selected objects and random color
-	for (let i = 0; i < typeSelectList.length; i++) {
-    	
-		const iconName = typeSelectList[i].name;
-    	const iconPrefix = typeSelectList[i].prefix;
-    	const iClass = `${iconPrefix}solid ${iconPrefix}${iconName}`;
+	typeSelectList.forEach(icon => {
 
-    	const colMarkUp = generateColMarkUp(iClass, iconName, randomColor);
+    	const colMarkUp = generateColMarkUp(`${icon.prefix}solid ${icon.prefix}${icon.name}`, icon.name, randomColor);
     	rowEl.insertAdjacentHTML("beforeend", colMarkUp);
-	}
+	})
 	
 
 	function generateColMarkUp(fontAwesomeIconClass, fontAwesomeIconName, generatedRandomColor) {        
